@@ -43,6 +43,17 @@
 
     <li class="nav-small-cap">
         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+        <span class="hide-menu">data</span>
+    </li>
+    <li class="sidebar-item">
+        <a class="sidebar-link @if (Request::is('admin/agenda*')) active @endif" href="{{ url('/admin/agenda') }}">
+            <span><i class="ti ti-users"></i></span>
+            <span class="hide-menu">Agenda</span>
+        </a>
+    </li>
+
+    <li class="nav-small-cap">
+        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
         <span class="hide-menu">master</span>
     </li>
     <li class="sidebar-item">
@@ -50,6 +61,13 @@
             href="{{ url('/admin/master/alumni') }}">
             <span><i class="ti ti-users"></i></span>
             <span class="hide-menu">Alumni Master</span>
+        </a>
+    </li>
+
+    <li class="sidebar-item">
+        <a class="sidebar-link @if (Request::is('admin/pengguna*')) active @endif" href="{{ url('/admin/pengguna') }}">
+            <span><i class="ti ti-users"></i></span>
+            <span class="hide-menu">Pengguna</span>
         </a>
     </li>
 

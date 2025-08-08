@@ -5,16 +5,16 @@
     <div class="card">
         <div class="card-body">
             <h2 class="fw-semibold mb-3">@yield('title')</h2>
-            <a href="{{ route('admin.alumni.master.create') }}" class="btn btn-primary mb-3">Tambah Alumni</a>
+            <a href="{{ route('admin.alumnimaster.create') }}" class="btn btn-primary mb-3">Tambah Alumni</a>
 
             <div class="table-responsive">
                 <table class="table">
-                    <thead>
+                    <thead class="table-dark border-0">
                         <tr>
-                            <th>Nama Lengkap</th>
+                            <th class="rounded-start">Nama Lengkap</th>
                             <th>Tahun Kelulusan</th>
                             <th>Tanggal Lahir</th>
-                            <th>Aksi</th>
+                            <th class="rounded-end">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,9 +24,9 @@
                                 <td>{{ $alumni->tahun_kelulusan }}</td>
                                 <td>{{ $alumni->tanggal_lahir->format('d-m-Y') }}</td>
                                 <td>
-                                    <a href="{{ route('admin.alumni.master.edit', $alumni->id) }}"
+                                    <a href="{{ route('admin.alumnimaster.edit', $alumni->id) }}"
                                         class="btn btn-sm btn-warning">Edit</a>
-                                    <form action="{{ route('admin.alumni.master.destroy', $alumni->id) }}" method="POST"
+                                    <form action="{{ route('admin.alumnimaster.destroy', $alumni->id) }}" method="POST"
                                         style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')

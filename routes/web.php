@@ -2,11 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Dashboard\AgendaController;
 use App\Http\Controllers\Dashboard\AlumniController;
 use App\Http\Controllers\Dashboard\AlumniMasterController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\OperatorController;
 use App\Http\Controllers\Dashboard\PemasukanController;
 use App\Http\Controllers\Dashboard\PengeluaranController;
+use App\Http\Controllers\Dashboard\PenggunaController;
 use App\Http\Controllers\Public\PublicController;
 use App\Http\Middleware\RoleMiddleware;
 
@@ -27,8 +30,24 @@ Route::controller(PublicController::class)->prefix('data/alumni')->name('alumni.
 });
 
 // operator route
-Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [OperatorController::class, 'dashboardOperator'])->name('dashboard.index');
+Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin')->name('operator.dashboard.')->group(function () {
+    Route::get('/operator', [DashboardController::class, 'dashboardOperator'])->name('index');
+});
+
+Route::middleware(['auth', RoleMiddleware::class . ':bendahara'])->prefix('admin')->name('bendahara.dashboard.')->group(function () {
+    Route::get('/bendahara', [DashboardController::class, 'dashboardBendahara'])->name('index');
+});
+
+Route::middleware(['auth', RoleMiddleware::class . ':sekretaris'])->prefix('admin')->name('sekretaris.dashboard.')->group(function () {
+    Route::get('/sekretaris', [DashboardController::class, 'dashboardSekretaris'])->name('index');
+});
+
+Route::middleware(['auth', RoleMiddleware::class . ':media'])->prefix('admin')->name('media.dashboard.')->group(function () {
+    Route::get('/media', [DashboardController::class, 'dashboardMedia'])->name('index');
+});
+
+Route::middleware(['auth', RoleMiddleware::class . ':alumni'])->prefix('user')->name('alumni.dashboard.')->group(function () {
+    Route::get('/alumni', [DashboardController::class, 'dashboardAlumni'])->name('index');
 });
 
 // pemasukan route
@@ -57,7 +76,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin'
 
 // master alumni route
 Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin')->name('admin.')->group(function () {
-    Route::controller(AlumniMasterController::class)->prefix('alumni/master')->name('alumni.master.')->group(function () {
+    Route::controller(AlumniMasterController::class)->prefix('master/alumni')->name('alumnimaster.')->group(function () {
         Route::get('/', 'alumnimasterIndex')->name('index');
         Route::get('/tambah', 'alumnimasterCreate')->name('create');
         Route::post('/', 'alumnimasterStore')->name('store');
@@ -81,7 +100,28 @@ Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin'
     });
 });
 
-// alumni route
-Route::middleware(['auth', RoleMiddleware::class . ':alumni'])->prefix('alumni')->name('alumni.')->group(function () {
-    Route::get('/', [AlumniController::class, 'dashboardAlumni'])->name('dashboard.index');
+
+// pengguna sistem
+Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin')->name('admin.')->group(function () {
+    Route::controller(PenggunaController::class)->prefix('pengguna')->name('pengguna.')->group(function () {
+        Route::get('/', 'penggunaIndex')->name('index');
+        Route::get('/tambah', 'penggunaCreate')->name('create');
+        Route::post('/', 'penggunaStore')->name('store');
+        Route::get('/{user}/edit', 'penggunaEdit')->name('edit');
+        Route::put('/{user}', 'penggunaUpdate')->name('update');
+        Route::delete('/{user}', 'penggunaDestroy')->name('destroy');
+    });
+});
+
+// agenda
+Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin')->name('admin.')->group(function () {
+    Route::controller(AgendaController::class)->prefix('agenda')->name('agenda.')->group(function () {
+        Route::get('/', 'agendaIndex')->name('index');
+        Route::get('/tambah', 'agendaCreate')->name('create');
+        Route::post('/', 'agendaStore')->name('store');
+        Route::get('/{agenda}/edit', 'agendaEdit')->name('edit');
+        Route::put('/{agenda}', 'agendaUpdate')->name('update');
+        Route::delete('/{agenda}', 'agendaDestroy')->name('destroy');
+        Route::get('/{agenda}', 'agendaShow')->name('show');
+    });
 });
