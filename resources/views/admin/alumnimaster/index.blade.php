@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Data Alumni Master')
+@section('title', 'Alumni Master')
 
 @section('content')
     <div class="card">

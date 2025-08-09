@@ -2,7 +2,9 @@
 @section('title', 'Cek data alumni')
 
 @section('content')
+    @include('partials.navbar')
     <div class="container py-5">
+
         <form method="POST" action="{{ route('alumni.simpan') }}">
             @csrf
 

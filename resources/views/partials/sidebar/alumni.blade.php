@@ -12,6 +12,13 @@
         </a>
     </li>
 
+    <li class="sidebar-item">
+        <a class="sidebar-link @if (Request::is('admin/biodata')) active @endif" href="{{ url('/admin/biodata') }}">
+            <span><i class="ti ti-layout-dashboard"></i></span>
+            <span class="hide-menu">Biodata</span>
+        </a>
+    </li>
+
     <li class="nav-small-cap">
         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
         <span class="hide-menu">lainnya</span>

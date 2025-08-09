@@ -2,7 +2,7 @@
 @section('title', $title ?? '-')
 
 @section('content')
-    <div class="container d-flex justify-content-center align-items-center py-5">
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="card border shadow-none col-md-4">
             <div class="card-body p-5">
                 <a href="/login" class="d-block mb-3 text-center">

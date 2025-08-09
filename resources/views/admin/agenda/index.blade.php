@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Data Agenda')
+@section('title', 'Agenda')
 
 @section('content')
     <div class="card">

@@ -37,50 +37,56 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Pendaftaran berhasil. Silakan login.');
     }
 
-    // form login
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
-        $title='Masuk';
-        return view('auth.login',compact('title'));
-    }
-
-    // validasi halaman login
-    public function login(Request $request)
-    {
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required|min:8',
-    ]);
-
-    if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
-        $request->session()->regenerate();
-
-        $role = Auth::user()->role;
-
-        if ($role === 'bendahara') {
-            return redirect()->route('bendahara.dashboard.index')->with('success', 'Login berhasil!');
-        } elseif ($role === 'sekretaris') {
-            return redirect()->route('sekretaris.dashboard.index')->with('success', 'Login berhasil!');
-        } elseif ($role === 'media') {
-            return redirect()->route('media.dashboard.index')->with('success', 'Login berhasil!');
-        } elseif ($role === 'operator') {
-            return redirect()->route('operator.dashboard.index')->with('success', 'Login berhasil!');
-        } elseif ($role === 'alumni') {
-            return redirect()->route('alumni.dashboard.index')->with('success', 'Login berhasil!');
+        if ($request->has('redirect_to')) {
+            session(['redirect_to' => $request->redirect_to]);
         }
 
-        Auth::logout();
+        return view('auth.login');
+    }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8',
+        ]);
+
+        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+            $request->session()->regenerate();
+
+            if (session()->has('redirect_to')) {
+                $redirect = session('redirect_to');
+                session()->forget('redirect_to');
+                return redirect($redirect)->with('success', 'Login berhasil!');
+            }
+
+            $role = Auth::user()->role;
+
+            if ($role === 'bendahara') {
+                return redirect()->route('bendahara.dashboard.index')->with('success', 'Login berhasil!');
+            } elseif ($role === 'sekretaris') {
+                return redirect()->route('sekretaris.dashboard.index')->with('success', 'Login berhasil!');
+            } elseif ($role === 'media') {
+                return redirect()->route('media.dashboard.index')->with('success', 'Login berhasil!');
+            } elseif ($role === 'operator') {
+                return redirect()->route('operator.dashboard.index')->with('success', 'Login berhasil!');
+            } elseif ($role === 'alumni') {
+                return redirect()->route('alumni.dashboard.index')->with('success', 'Login berhasil!');
+            }
+
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Role pengguna tidak valid.',
+            ])->withInput();
+        }
+
         return back()->withErrors([
-            'email' => 'Role pengguna tidak valid.',
-        ])->withInput();
+            'email' => 'Email atau password salah.',
+        ])->withInput()->with('error','Email atau Password Salah!');
     }
 
-    return back()->withErrors([
-        'email' => 'Email atau password salah.',
-    ])->withInput()->with('error','Email atau Password Salah!');
-    }
-
-    // keluar
     public function logout(Request $request)
     {
         Auth::logout();
@@ -90,4 +96,16 @@ class AuthController extends Controller
 
         return redirect()->route('login')->with('success', 'Logout berhasil!');
     }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if (session()->has('redirect_to')) {
+            $redirect = session('redirect_to');
+            session()->forget('redirect_to');
+            return redirect($redirect);
+        }
+
+        return redirect()->intended(route('/'));
+    }
+
 }

@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Data Alumni')
+@section('title', 'Alumni')
 
 @section('content')
     <div class="card">
@@ -16,6 +16,7 @@
                         <thead class="table-dark border-0">
                             <tr>
                                 <th class="rounded-start">Nama Lengkap</th>
+                                <th>NIA</th>
                                 <th>Email</th>
                                 <th>Nomor WA</th>
                                 <th>Tahun Kelulusan</th>
@@ -28,6 +29,7 @@
                             @forelse ($alumnis as $alumni)
                                 <tr>
                                     <td>{{ $alumni->nama_lengkap }}</td>
+                                    <td>{{ $alumni->nia }}</td>
                                     <td>{{ $alumni->email }}</td>
                                     <td>{{ $alumni->no_wa }}</td>
                                     <td>{{ $alumni->tahun_kelulusan }}</td>

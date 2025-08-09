@@ -12,4 +12,9 @@ class DashboardController extends Controller
     {
         return view("admin.index");
     }
+
+    public function dashboardAlumni()
+    {
+        return view("admin.dashboard.alumni");
+    }
 }
