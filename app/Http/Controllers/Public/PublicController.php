@@ -19,7 +19,7 @@ use App\Models\Donasi;
 use App\Models\Galeri;
 use App\Models\Doa;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\File;
 
 class PublicController extends Controller
 {
@@ -118,14 +118,9 @@ class PublicController extends Controller
 
     public function agendaIndex()
     {
-        $highlighted = Agenda::latest('tanggal')->take(4)->get();
+        $agendas = Agenda::orderBy('tanggal', 'asc')->get();
 
-        $highlightedIds = $highlighted->pluck('id')->toArray();
-        $agendas = Agenda::whereNotIn('id', $highlightedIds)
-                         ->latest('tanggal')
-                         ->get();
-
-        return view('public.agenda.index', compact( 'highlighted', 'agendas'));
+        return view('public.agenda.index', compact('agendas'));
     }
 
     public function agendaShow($slug)
@@ -190,9 +185,9 @@ class PublicController extends Controller
 
     public function donasiIndex()
     {
-        $highlightedIds = Campaign::where('status', 'Aktif')->latest()->take(4)->pluck('id');
+        $highlightedIds = Campaign::where('kategori', '!=', 'Lainnya')->latest()->pluck('id');
         $highlighted = Campaign::whereIn('id', $highlightedIds)->get();
-        $all = Campaign::where('status', 'Aktif')->whereNotIn('id', $highlightedIds)->latest()->get();
+        $all = Campaign::where('kategori', 'Lainnya')->whereNotIn('id', $highlightedIds)->latest()->get();
 
         return view('public.campaign.index', compact('highlighted', 'all'));
     }
@@ -309,15 +304,9 @@ class PublicController extends Controller
 
     public function beritaIndex()
     {
+        $beritas = Berita::orderBy('created_at', 'desc')->get();
 
-        $highlighted = Berita::latest('created_at')->take(4)->get();
-
-        $highlightedIds = $highlighted->pluck('id')->toArray();
-        $beritas = Berita::whereNotIn('id', $highlightedIds)
-                         ->latest('created_at')
-                         ->get();
-
-        return view('public.berita.index', compact( 'highlighted', 'beritas'));
+        return view('public.berita.index', compact('beritas'));
     }
 
     public function beritaShow($slug)
@@ -438,6 +427,14 @@ class PublicController extends Controller
 
     public function profilIndex()
     {
-        return view("public.profil.index");
+        $folderPath = public_path('images');
+        $files = File::files($folderPath);
+
+        $fileNames = [];
+        foreach ($files as $file) {
+            $fileNames[] = $file->getFilename();
+        }
+
+        return view("public.profil.index", ['files' => $fileNames]);
     }
 }

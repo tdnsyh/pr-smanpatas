@@ -5,10 +5,27 @@
     <div class="card">
         <div class="card-body">
             <h2 class="fw-semibold mb-3">@yield('title')</h2>
-            <a href="{{ route('admin.alumnimaster.create') }}" class="btn btn-primary mb-3">Tambah Alumni</a>
+            <a href="{{ route('admin.alumnimaster.create') }}" class="btn btn-primary">Tambah Alumni</a>
+            <a href="{{ route('admin.alumnimaster.import') }}" class="btn btn-success">Import Alumni</a>
+            <a href="{{ route('admin.alumnimaster.export') }}" class="btn btn-warning">Export Alumni</a>
 
-            <div class="table-responsive">
-                <table class="table">
+            <form method="GET" class="row g-2 mt-3">
+                <div class="col-auto">
+                    <select name="tahun_kelulusan" class="form-select">
+                        <option value="">-- Pilih Tahun Kelulusan --</option>
+                        @foreach ($tahunList as $t)
+                            <option value="{{ $t }}" {{ $tahun == $t ? 'selected' : '' }}>
+                                {{ $t }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a href="{{ route('admin.alumnimaster.index') }}" class="btn btn-secondary">Reset</a>
+                </div>
+            </form>
+            <div class="table-responsive mt-3">
+                <table class="table" id="table1">
                     <thead class="table-dark border-0">
                         <tr>
                             <th class="rounded-start">Nama Lengkap</th>
@@ -42,3 +59,15 @@
         </div>
     </div>
 @endsection
+
+@push('script')
+    <script src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/datatables.js') }}"></script>
+@endpush
+
+@push('style')
+    <link rel="stylesheet" href="{{ asset('assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/table-datatable-jquery.css') }}">
+@endpush

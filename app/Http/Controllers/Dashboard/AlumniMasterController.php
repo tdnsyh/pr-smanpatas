@@ -2,16 +2,33 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exports\AlumniMasterExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\AlumniMaster;
+use App\Imports\AlumniMasterImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AlumniMasterController extends Controller
 {
-    public function alumnimasterIndex()
+    public function alumnimasterIndex(Request $request)
     {
-        $alumnis = AlumniMaster::orderBy('nama_lengkap')->get();
-        return view('admin.alumnimaster.index', compact('alumnis'));
+        $tahun = $request->input('tahun_kelulusan');
+
+        $query = AlumniMaster::orderBy('nama_lengkap');
+
+        if ($tahun) {
+            $query->where('tahun_kelulusan', $tahun);
+        }
+
+        $alumnis = $query->get();
+
+        $tahunList = AlumniMaster::select('tahun_kelulusan')
+                        ->distinct()
+                        ->orderBy('tahun_kelulusan', 'desc')
+                        ->pluck('tahun_kelulusan');
+
+        return view('admin.alumnimaster.index', compact('alumnis', 'tahunList', 'tahun'));
     }
 
     public function alumnimasterCreate()
@@ -57,5 +74,26 @@ class AlumniMasterController extends Controller
         $alumni->delete();
 
         return redirect()->route('admin.alumnimaster.index')->with('success', 'Data alumni dihapus.');
+    }
+
+    public function alumniMasterImport()
+    {
+        return view('admin.alumnimaster.import');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv',
+        ]);
+
+        Excel::import(new AlumniMasterImport, $request->file('file'));
+
+        return redirect()->route('admin.alumnimaster.index')->with('success', 'Data alumni berhasil diimport!');
+    }
+
+    public function export()
+    {
+        return Excel::download(new AlumniMasterExport, 'alumni_master.xlsx');
     }
 }

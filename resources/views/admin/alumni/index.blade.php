@@ -6,6 +6,51 @@
         <div class="card-body">
             <h2 class="fw-semibold mb-3">@yield('title')</h2>
             <a href="{{ route('admin.alumni.create') }}" class="btn btn-primary">Tambah Alumni</a>
+            <a href="{{ route('admin.alumni.import') }}" class="btn btn-success">Import Alumni</a>
+            <a href="{{ route('admin.alumni.export') }}" class="btn btn-warning">Export Alumni</a>
+
+            <form method="GET" class="row g-3 mt-3">
+                <div class="col-md-3">
+                    <label class="form-label">Tahun Kelulusan</label>
+                    <select name="tahun_kelulusan" class="form-select">
+                        <option value="">-- Semua Tahun --</option>
+                        @foreach ($tahunList as $t)
+                            <option value="{{ $t }}" {{ $tahun == $t ? 'selected' : '' }}>
+                                {{ $t }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Pekerjaan Saat Ini</label>
+                    <select name="pekerjaan_saat_ini" class="form-select">
+                        <option value="">-- Semua Pekerjaan --</option>
+                        @foreach ($pekerjaanList as $p)
+                            <option value="{{ $p }}" {{ $pekerjaan == $p ? 'selected' : '' }}>
+                                {{ $p }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Pendidikan Terakhir</label>
+                    <select name="jenjang_pendidikan_terakhir" class="form-select">
+                        <option value="">-- Semua Pendidikan --</option>
+                        @foreach ($pendidikanList as $pd)
+                            <option value="{{ $pd }}" {{ $pendidikan == $pd ? 'selected' : '' }}>
+                                {{ $pd }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-3 d-flex align-items-end gap-2">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                    <a href="{{ route('admin.alumni.index') }}" class="btn btn-secondary w-100">Reset</a>
+                </div>
+            </form>
             @if ($alumnis->isEmpty())
                 <div class="alert alert-warning mt-3" role="alert">
                     Belum ada data alumni.

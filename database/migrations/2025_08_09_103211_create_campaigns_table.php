@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('judul');
             $table->string('slug');
+            $table->string('kategori');
             $table->text('deskripsi');
             $table->decimal('target_donasi', 15, 2);
             $table->string('gambar')->nullable();

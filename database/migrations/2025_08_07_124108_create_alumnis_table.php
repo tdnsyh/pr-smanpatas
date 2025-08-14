@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('alumni', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('nia')->unique(); // nomor identitas alumni
+            $table->string('nia')->unique();
             $table->string('nama_lengkap');
             $table->string('nama_panggilan')->nullable();
             $table->integer('tahun_kelulusan')->nullable();

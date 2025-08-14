@@ -14,6 +14,7 @@ class Campaign extends Model
     protected $fillable = [
         'judul',
         'slug',
+        'kategori',
         'gambar',
         'deskripsi',
         'target_donasi',

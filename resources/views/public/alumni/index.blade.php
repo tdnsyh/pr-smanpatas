@@ -68,8 +68,7 @@
                             <form method="GET" action="{{ route('alumni.publik') }}">
                                 <input type="text" name="search"
                                     class="form-control text-center form-control-lg rounded-1"
-                                    placeholder="Cari berdasarkan nama, angkatan, atau pekerjaan . ."
-                                    value="{{ request('search') }}">
+                                    placeholder="Cari berdasarkan nama atau angkatan . ." value="{{ request('search') }}">
                                 <div class="mt-3 d-flex justify-content-center">
                                     <button class="btn btn-primary rounded-1" type="submit">Cari Alumni</button>
                                     <a href="/alumni/cek/form" class="btn btn-outline-primary rounded-1 ms-2">Isi Data
@@ -121,15 +120,16 @@
                                 <div class="p-2">
                                     Tidak menemukan data yang kamu cari. Isi data
                                     <a href="/alumni/cek/form" class="text-decoration-none">di sini</a>
-                                    atau <a href="/alumni/form" class="text-decoration-none">hubungi admin</a>.
+                                    atau <a href="/hubungi-admin" class="text-decoration-none">hubungi admin</a>.
                                 </div>
                             </div>
                         @else
                             <div class="alert alert-success mt-3" role="alert">
                                 <div class="p-2">
                                     Menampilkan hasil pencarian untuk "<strong>{{ request('search') }}</strong>". Data yang
-                                    diminta tidak ada? Tambah <a href="/alumni/cek/form"
-                                        class="text-decoration-none ms-1">disini.</a>
+                                    diminta tidak ada? Tambah<a href="/alumni/cek/form"
+                                        class="text-decoration-none ms-1">disini</a> atau <a href="/hubungi-admin"
+                                        class="text-decoration-none">hubungi admin</a>.
                                 </div>
                             </div>
                         @endif

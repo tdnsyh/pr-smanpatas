@@ -2,20 +2,46 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exports\AlumniExport;
 use App\Http\Controllers\Controller;
+use App\Imports\AlumniImport;
 use Illuminate\Http\Request;
 use App\Models\Alumni;
 use App\Models\AlumniPrivasi;
 use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AlumniController extends Controller
 {
-    public function alumniIndex()
+    public function alumniIndex(Request $request)
     {
-        $alumnis = Alumni::all();
-        return view('admin.alumni.index', compact('alumnis'));
+        $tahun = $request->input('tahun_kelulusan');
+        $pekerjaan = $request->input('pekerjaan_saat_ini');
+        $pendidikan = $request->input('jenjang_pendidikan_terakhir');
+
+        $query = Alumni::orderBy('nama_lengkap');
+
+        if ($tahun) {
+            $query->where('tahun_kelulusan', $tahun);
+        }
+
+        if ($pekerjaan) {
+            $query->where('pekerjaan_saat_ini', $pekerjaan);
+        }
+
+        if ($pendidikan) {
+            $query->where('jenjang_pendidikan_terakhir', $pendidikan);
+        }
+
+        $alumnis = $query->get();
+
+        $tahunList = Alumni::select('tahun_kelulusan')->distinct()->orderBy('tahun_kelulusan', 'desc')->pluck('tahun_kelulusan');
+        $pekerjaanList = Alumni::select('pekerjaan_saat_ini')->whereNotNull('pekerjaan_saat_ini')->distinct()->orderBy('pekerjaan_saat_ini')->pluck('pekerjaan_saat_ini');
+        $pendidikanList = Alumni::select('jenjang_pendidikan_terakhir')->whereNotNull('jenjang_pendidikan_terakhir')->distinct()->orderBy('jenjang_pendidikan_terakhir')->pluck('jenjang_pendidikan_terakhir');
+
+        return view('admin.alumni.index', compact('alumnis', 'tahunList', 'pekerjaanList', 'pendidikanList', 'tahun', 'pekerjaan', 'pendidikan'));
     }
 
     public function alumniCreate()
@@ -54,6 +80,14 @@ class AlumniController extends Controller
         $data['nia'] = $nia;
 
         // =====================
+        // 1.1 Generate Email jika kosong
+        // =====================
+        if (empty($data['email'])) {
+            $slugName = Str::slug($data['nama_lengkap'], '.');
+            $data['email'] = strtolower($slugName) . '@ika-smanpatas.com';
+        }
+
+        // =====================
         // 2. Simpan ke alumni
         // =====================
         $alumni = Alumni::create([
@@ -79,9 +113,9 @@ class AlumniController extends Controller
         User::create([
             'name'       => $data['nama_lengkap'],
             'email'      => $data['email'],
-            'password'   => Hash::make($nia), // password = NIA
+            'password'   => Hash::make($nia),
             'role'       => 'alumni',
-            'alumni_id'  => $alumni->id,      // optional, jika kolom tersedia
+            'alumni_id'  => $alumni->id,
         ]);
 
         return redirect()->route('admin.alumni.index')
@@ -155,5 +189,26 @@ class AlumniController extends Controller
     {
         $alumni->delete();
         return redirect()->route('admin.alumni.index')->with('success', 'Alumni berhasil dihapus.');
+    }
+
+    public function alumniImport()
+    {
+        return view('admin.alumni.import');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv',
+        ]);
+
+        Excel::import(new AlumniImport, $request->file('file'));
+
+        return redirect()->route('admin.alumni.index')->with('success', 'Data alumni berhasil diimport!');
+    }
+
+    public function export()
+    {
+        return Excel::download(new AlumniExport, 'data_alumni.xlsx');
     }
 }

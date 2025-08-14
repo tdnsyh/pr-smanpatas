@@ -6,9 +6,13 @@
     {{-- profil --}}
     <section class="py-5">
         <div class="container">
-            <img src="{{ asset('assets/images/logos/logo1.png') }}" alt="" class="img-fluid">
-            <div class="row row-cols-1 row-cols-md-2 align-items-center mt-5">
+            <div class="row row-cols-1 row-cols-md-2">
                 <div class="col" data-aos="fade-right">
+                    <div class="card bg-light h-100">
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <img src="{{ asset('assets/images/logos/logo1.png') }}" alt="" class="img-fluid">
+                        </div>
+                    </div>
                 </div>
                 <div class="col" data-aos="fade-left" data-aos-delay="100">
                     <span class="badge text-bg-light rounded-1 py-2 px-3">PROFIL</span>
@@ -23,7 +27,38 @@
                         <strong>Pancasila</strong> dan <strong>Undang-Undang Dasar 1945</strong>. Mengedepankan nilai-nilai
                         kekeluargaan, persatuan, musyawarah, sportifitas, tolong-menolong, dan independensi.
                     </p>
+                    <div class="mt-3">
+                        <span class="badge text-bg-light rounded-1 py-2 px-3">LOGO</span>
+                        <h1 class="fw-semibold mt-2">Logo dan Makna</h1>
+                        <p>Lambang Ikatan Alumni SMAN 4 Tasikmalaya terdiri dari dua siluet manusia yang bersambung serta
+                            centang berwarna biru dan oranye. Makna simbol tersebut:</p>
+                        <ul>
+                            <li><strong>Dua siluet manusia:</strong> Melambangkan hubungan erat antar alumni dan kolaborasi.
+                            </li>
+                            <li><strong>Centang:</strong> Menunjukkan persetujuan dan komitmen terhadap nilai-nilai
+                                almamater.</li>
+                            <li><strong>Warna biru:</strong> Melambangkan keyakinan, keteguhan, dan kebijaksanaan.</li>
+                            <li><strong>Warna oranye:</strong> Melambangkan kegembiraan, kreativitas, dan optimisme.</li>
+                        </ul>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-4">
+        <div class="container py-3">
+            <div class="text-center">
+                <span class="badge text-bg-light rounded-1 py-2 px-3">RAKOOR</span>
+                <h1 class="fw-semibold mt-2">Rapat Koordinasi Kedua Alumni dalam Persiapan Pembentukan Ikatan Alumni (IKA)
+                </h1>
+            </div>
+            <div class="row row-cols-2 row-cols-md-4 g-4 mt-3" data-masonry='{"percentPosition": true }'>
+                @foreach ($files as $file)
+                    <div class="col">
+                        <img src="{{ asset('images/' . $file) }}" alt="{{ $file }}" class="w-100 rounded">
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -79,75 +114,11 @@
 
     {{-- pengurus organisasi --}}
     <section class="py-4" data-aos="fade-up" data-aos-duration="1000">
-        <div class="container text-center">
+        <div class="container-fluid text-center">
             <span class="badge text-bg-light rounded-1 py-2 px-3">PENGURUS</span>
             <h1 class="fw-semibold mt-2">Struktur Organisasi</h1>
-            <div class="row row-cols-1 row-cols-md-5 g-3">
-                <div class="col">
-                    <div class="card border shadow-none">
-                        <div class="card-body">
-                            <p class="card-title">Lorem, ipsum dolor.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card border shadow-none">
-                        <div class="card-body">
-                            <p class="card-title">Lorem, ipsum dolor.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card border shadow-none">
-                        <div class="card-body">
-                            <p class="card-title">Lorem, ipsum dolor.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card border shadow-none">
-                        <div class="card-body">
-                            <p class="card-title">Lorem, ipsum dolor.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card border shadow-none">
-                        <div class="card-body">
-                            <p class="card-title">Lorem, ipsum dolor.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- logo dan makna --}}
-    <section class="py-4" data-aos="zoom-in" data-aos-duration="1000">
-        <div class="container">
-            <div class="rounded border p-5">
-                <div class="text-center">
-                    <span class="badge text-bg-light rounded-1 py-2 px-3">LOGO</span>
-                    <h1 class="fw-semibold mt-2">Logo dan Makna</h1>
-                </div>
-                <div class="row row-cols-1 row-cols-md-2">
-                    <div class="col">
-                        <img src="{{ asset('assets/images/logos/logo1.png') }}" alt="" class="img-fluid">
-                    </div>
-                    <div class="col">
-                        <p>Lambang Ikatan Alumni SMAN 4 Tasikmalaya terdiri dari dua siluet manusia yang bersambung serta
-                            centang berwarna biru dan oranye. Makna simbol tersebut:</p>
-                        <ul>
-                            <li><strong>Dua siluet manusia:</strong> Melambangkan hubungan erat antar alumni dan kolaborasi.
-                            </li>
-                            <li><strong>Centang:</strong> Menunjukkan persetujuan dan komitmen terhadap nilai-nilai
-                                almamater.</li>
-                            <li><strong>Warna biru:</strong> Melambangkan keyakinan, keteguhan, dan kebijaksanaan.</li>
-                            <li><strong>Warna oranye:</strong> Melambangkan kegembiraan, kreativitas, dan optimisme.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <img src="{{ asset('images/WhatsApp Image 2025-07-30 at 08.28.47.jpeg') }}" alt=""
+                class="img-fluid rounded w-100">
         </div>
     </section>
 

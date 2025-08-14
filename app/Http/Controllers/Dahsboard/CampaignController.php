@@ -38,6 +38,7 @@ class CampaignController extends Controller
 
         $validated = $request->validate([
             'judul'            => 'required',
+            'kategori'            => 'required',
             'deskripsi'        => 'required',
             'target_donasi'    => 'required|numeric',
         ]);
@@ -64,6 +65,7 @@ class CampaignController extends Controller
 
         $validated = $request->validate([
             'judul'            => 'required',
+            'kategori'            => 'required',
             'deskripsi'        => 'required',
             'target_donasi'    => 'required|numeric',
             'status'           => 'required',

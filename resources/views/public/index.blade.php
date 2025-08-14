@@ -13,7 +13,7 @@
                         class="btn rounded btn-primary d-flex align-items-center justify-content-center">
                         <h2 class="text-white m-0">Masuk</h2>
                     </a>
-                    <a href="{{ route('login') }}"
+                    <a href="{{ route('alumni.publik') }}"
                         class="btn rounded bg-primary-subtle d-flex align-items-center justify-content-center">
                         <h2 class="text-primary m-0">Cari Alumni</h2>
                     </a>
@@ -350,7 +350,7 @@
                         <span class="badge text-bg-primary rounded-1 py-2 px-3 mt-3">BERITA</span>
                         <h1 class="text-white">Dapatkan informasi terkini seputar aktivitas, prestasi, dan
                             kontribusi alumni SMANPATAS dari berbagai angkatan.</h1>
-                        <a href="/artikel" class="btn text-dark bg-light mb-3 rounded">Lihat Semua Berita</a>
+                        <a href="/berita" class="btn text-dark bg-light mb-3 rounded">Lihat Semua Berita</a>
                     </div>
                     <div class="col-md-4 col scrollable-mobile-fix" style="overflow-y: auto;">
                         @foreach ($beritaTerbaru as $berita)
@@ -497,18 +497,12 @@
                 <p class="mb-3 text-white">Isi data alumni, dukung program melalui donasi, ikuti kabar terbaru dan agenda
                     kegiatan alumni.</p>
                 <div class="d-flex flex-wrap gap-1">
-                    <a href="/alumni/form" class="btn btn-light text-primary rounded">Isi Data Alumni</a>
+                    <a href="/alumni/cek/form" class="btn btn-light text-primary rounded">Isi Data Alumni</a>
                     <a href="/campaign" class="btn btn-outline-light rounded">Berdonasi</a>
                     <a href="/berita" class="btn btn-outline-light rounded">Baca Berita</a>
                     <a href="/agenda" class="btn btn-outline-light rounded">Lihat Agenda</a>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section class="py-4 bg-primary">
-        <div class="container py-3">
-            <h1>tes</h1>
         </div>
     </section>
 @endsection

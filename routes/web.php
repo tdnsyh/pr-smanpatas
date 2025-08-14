@@ -113,6 +113,9 @@ Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin'
     Route::controller(AlumniMasterController::class)->prefix('master/alumni')->name('alumnimaster.')->group(function () {
         Route::get('/', 'alumnimasterIndex')->name('index');
         Route::get('/tambah', 'alumnimasterCreate')->name('create');
+        Route::get('/import', 'alumniMasterImport')->name('import');
+        Route::get('/export', 'export')->name('export');
+        Route::post('/import', 'import')->name('import.save');
         Route::post('/', 'alumnimasterStore')->name('store');
         Route::get('/{id}/edit', 'alumnimasterEdit')->name('edit');
         Route::put('/{id}', 'alumnimasterUpdate')->name('update');
@@ -126,6 +129,9 @@ Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin'
         Route::get('/', 'alumniIndex')->name('index');
         Route::get('/export', 'alumniIndex')->name('export');
         Route::get('/tambah', 'alumniCreate')->name('create');
+        Route::get('/import', 'alumniImport')->name('import');
+        Route::get('/export', 'export')->name('export');
+        Route::post('/import', 'import')->name('import.save');
         Route::post('/', 'alumniStore')->name('store');
         Route::get('/{alumni}/edit', 'alumniEdit')->name('edit');
         Route::put('/{alumni}', 'alumniUpdate')->name('update');

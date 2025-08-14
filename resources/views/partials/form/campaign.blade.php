@@ -1,4 +1,18 @@
 <div class="mb-3">
+    <label>Kategori</label>
+    <select name="kategori" class="form-control" required>
+        <option value="Operasional" {{ old('kategori', $campaign->kategori ?? '') == 'Operasional' ? 'selected' : '' }}>
+            Operasional</option>
+        <option value="Reuni Akbar" {{ old('kategori', $campaign->kategori ?? '') == 'Reuni Akbar' ? 'selected' : '' }}>
+            Reuni Akbar</option>
+        <option value="Bakti Sosial"
+            {{ old('kategori', $campaign->kategori ?? '') == 'Bakti Sosial' ? 'selected' : '' }}>Bakti Sosial</option>
+        <option value="Lainnya" {{ old('kategori', $campaign->kategori ?? '') == 'Lainnya' ? 'selected' : '' }}>
+            Lainnya</option>
+    </select>
+</div>
+
+<div class="mb-3">
     <label>Judul</label>
     <input type="text" name="judul" class="form-control" value="{{ old('judul', $campaign->judul ?? '') }}" required>
 </div>

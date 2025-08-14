@@ -5,7 +5,7 @@
     <section class="py-4">
         <div class="container">
             <span class="badge text-bg-light rounded-1 py-2 px-3">ALUMNI</span>
-            <h1 class="fw-semibold mt-2">Campaign Terbaru</h1>
+            <h1 class="fw-semibold mt-2">Campaign Prioritas</h1>
             <div class="row row-cols-2 row-cols-md-4 g-3">
                 @foreach ($highlighted as $item)
                     @php
