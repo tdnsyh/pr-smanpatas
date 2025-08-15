@@ -27,6 +27,11 @@ class AlumniImport implements ToModel, WithHeadingRow
             } while (Alumni::where('nia', $nia)->exists());
         } else {
             $nia = $row['nia'];
+
+            // Skip jika NIA sudah ada
+            if (Alumni::where('nia', $nia)->exists()) {
+                return null;
+            }
         }
 
         // Generate Email jika kosong
@@ -35,6 +40,11 @@ class AlumniImport implements ToModel, WithHeadingRow
             $email = strtolower($slugName) . '@ika-smanpatas.com';
         } else {
             $email = $row['email'];
+        }
+
+        // Skip jika email sudah ada
+        if (User::where('email', $email)->exists()) {
+            return null;
         }
 
         // Simpan alumni
