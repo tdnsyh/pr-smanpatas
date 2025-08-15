@@ -7,12 +7,12 @@ use App\Models\Alumni;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AlumniPrivasi;
+use Illuminate\Support\Facades\Storage;
 
 class BiodataController extends Controller
 {
     public function biodataEdit()
     {
-        // Ambil alumni berdasarkan alumni_id user yang login
         $alumni = Alumni::where('id', Auth::user()->alumni_id)
             ->with('privasi')
             ->firstOrFail();
@@ -42,11 +42,21 @@ class BiodataController extends Controller
             'nama_instansi'                       => 'nullable|string',
             'jabatan'                             => 'nullable|string',
             'lokasi_tempat_bekerja'               => 'nullable|string',
+            'avatar'                              => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'privasi'                             => 'array',
         ]);
 
         $privasi = $data['privasi'] ?? [];
         unset($data['privasi']);
+
+        if ($request->hasFile('avatar')) {
+            if ($alumni->avatar && Storage::disk('public')->exists($alumni->avatar)) {
+                Storage::disk('public')->delete($alumni->avatar);
+            }
+
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $data['avatar'] = $path;
+        }
 
         // Update alumni
         $alumni->update($data);

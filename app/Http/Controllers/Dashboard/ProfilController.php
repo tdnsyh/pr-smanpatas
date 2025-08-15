@@ -46,6 +46,7 @@ class ProfilController extends Controller
             $path = $request->file('avatar')->store('avatars', 'public');
             $data['avatar'] = $path;
         }
+
         DB::table('users')->where('id', $user->id)->update($data);
 
         return back()->with('success', 'Profil berhasil diperbarui.');

@@ -31,6 +31,7 @@ class Alumni extends Model
         'nama_instansi',
         'jabatan',
         'lokasi_tempat_bekerja',
+        'avatar'
     ];
 
     public function user()

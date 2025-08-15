@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('nama_instansi')->nullable();
             $table->string('jabatan')->nullable();
             $table->string('lokasi_tempat_bekerja')->nullable();
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }

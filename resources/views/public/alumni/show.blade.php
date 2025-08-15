@@ -44,28 +44,36 @@
                     ['label' => 'Lokasi Tempat Bekerja', 'key' => 'lokasi_tempat_bekerja', 'icon' => 'map-pin'],
                 ];
             @endphp
-
-            <div class="row g-3 mt-3" data-aos="fade-up" data-aos-delay="100">
-                @foreach ($items as $item)
-                    @if (isset($data[$item['key']]))
-                        <div class="col-12 col-md-6">
-                            <div class="card border h-100">
-                                <div class="card-body d-flex align-items-center">
-                                    <div class="me-3 bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center"
-                                        style="width: 48px; height: 48px;">
-                                        <i class="ti ti-{{ $item['icon'] }} fs-5"></i>
-                                    </div>
-                                    <div>
-                                        <small class="text-muted">{{ $item['label'] }}</small>
-                                        <div class="fw-semibold text-break">{{ $data[$item['key']] ?: '-' }}</div>
+            <div class="row row-cols-1 row-cols-md-2 g-4 mt-3">
+                <div class="col-md-4">
+                    @if ($alumni->avatar)
+                        <img src="{{ asset('storage/' . $alumni->avatar) ?? '-' }}" alt="Avatar"
+                            class="rounded object-fit-cover img-fluid mb-3">
+                    @endif
+                </div>
+                <div class="col-md-8">
+                    <div class="row g-3" data-aos="fade-up" data-aos-delay="100">
+                        @foreach ($items as $item)
+                            @if (isset($data[$item['key']]))
+                                <div class="col-12 col-md-6">
+                                    <div class="card border h-100">
+                                        <div class="card-body d-flex align-items-center">
+                                            <div class="me-3 bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center"
+                                                style="width: 48px; height: 48px;">
+                                                <i class="ti ti-{{ $item['icon'] }} fs-5"></i>
+                                            </div>
+                                            <div>
+                                                <small class="text-muted">{{ $item['label'] }}</small>
+                                                <div class="fw-semibold text-break">{{ $data[$item['key']] ?: '-' }}</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    @endif
-                @endforeach
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
             </div>
-
             <div class="alert alert-warning d-flex align-items-center gap-2 mt-3" role="alert" data-aos="fade-up"
                 data-aos-delay="200">
                 <i class="ti ti-info-circle fs-5"></i>
