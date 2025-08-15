@@ -36,6 +36,8 @@
                         @include('partials.sidebar.bendahara')
                     @elseif(auth()->user()->role === 'alumni')
                         @include('partials.sidebar.alumni')
+                    @elseif(auth()->user()->role === 'kehormatan')
+                        @include('partials.sidebar.kehormatan')
                     @endif
                 </nav>
             </div>

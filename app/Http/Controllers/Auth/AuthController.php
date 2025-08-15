@@ -50,7 +50,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:8',
+            'password' => 'required',
         ]);
 
         if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
@@ -74,6 +74,8 @@ class AuthController extends Controller
                 return redirect()->route('operator.dashboard.index')->with('success', 'Login berhasil!');
             } elseif ($role === 'alumni') {
                 return redirect()->route('alumni.dashboard.index')->with('success', 'Login berhasil!');
+            } elseif ($role === 'kehormatan') {
+                return redirect()->route('kehormatan.dashboard.index')->with('success', 'Login berhasil!');
             }
 
             Auth::logout();

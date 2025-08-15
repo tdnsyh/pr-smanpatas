@@ -6,44 +6,31 @@
 
     <!-- Dashboard -->
     <li class="sidebar-item">
-        <a class="sidebar-link @if (Request::is('admin/sekretaris')) active @endif" href="{{ url('/admin/sekretaris') }}">
+        <a class="sidebar-link @if (Request::is('kehormatan/dashboard')) active @endif" href="{{ url('kehormatan/dashboard') }}">
             <span><i class="ti ti-layout-dashboard"></i></span>
             <span class="hide-menu">Dashboard</span>
         </a>
     </li>
 
-    {{-- Alumni --}}
     <li class="nav-small-cap">
         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-        <span class="hide-menu">Alumni</span>
-    </li>
-    <li class="sidebar-item">
-        <a class="sidebar-link @if (Request::is('admin/alumni*')) active @endif" href="{{ url('/admin/alumni') }}">
-            <span><i class="ti ti-users"></i></span>
-            <span class="hide-menu">Alumni</span>
-        </a>
-    </li>
-    <li class="sidebar-item">
-        <a class="sidebar-link @if (Request::is('admin/master/alumni*')) active @endif"
-            href="{{ url('/admin/master/alumni') }}">
-            <span><i class="ti ti-users"></i></span>
-            <span class="hide-menu">Alumni Master</span>
-        </a>
+        <span class="hide-menu">keuangan</span>
     </li>
 
     <li class="sidebar-item">
-        <a class="sidebar-link @if (Request::is('admin/campaign*')) active @endif" href="{{ url('/admin/campaign') }}">
-            <span><i class="ti ti-flag"></i></span>
-            <span class="hide-menu">Campaign</span>
+        <a class="sidebar-link @if (Request::is('kehormatan/donasi')) active @endif" href="{{ url('kehormatan/donasi') }}">
+            <span><i class="ti ti-arrow-up-circle"></i></span>
+            <span class="hide-menu">Riwayat Donasi</span>
         </a>
     </li>
+
     <li class="nav-small-cap">
         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
         <span class="hide-menu">lainnya</span>
     </li>
 
     <li class="sidebar-item">
-        <a class="sidebar-link @if (Request::is('admin/profil')) active @endif" href="{{ url('admin/profil') }}">
+        <a class="sidebar-link @if (Request::is('kehormatan/profil')) active @endif" href="{{ url('kehormatan/profil') }}">
             <span><i class="ti ti-user"></i></span>
             <span class="hide-menu">Profil</span>
         </a>

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Donasi;
 use App\Models\Galeri;
 use App\Models\Doa;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
@@ -139,18 +140,45 @@ class PublicController extends Controller
     {
         $alumnis = collect();
 
-        if ($request->filled(['search'])) {
+        if ($request->filled('search')) {
             $search = $request->search;
 
-            $alumnis = AlumniMaster::where(function ($query) use ($search) {
-                $query->where('nama_lengkap', 'like', "%{$search}%")
-                    ->orWhere('tahun_kelulusan', 'like', "%{$search}%");
+            $alumniData = Alumni::where(function($query) use ($search) {
+                    $query->where('nama_lengkap', 'like', "%{$search}%")
+                        ->orWhere('tahun_kelulusan', 'like', "%{$search}%");
+                })
+                ->withSum(['donasi as total_donasi' => function ($query) {
+                    $query->where('status', 'Verified')
+                        ->whereYear('donasi.created_at', now()->year);
+                }], 'jumlah')
+                ->get();
+
+            foreach ($alumniData as $alumni) {
+                $total = $alumni->total_donasi ?? 0;
+                $alumni->bintang = match (true) {
+                    $total >= 10000000 => 5,
+                    $total >= 5000000  => 4,
+                    $total >= 2000000  => 3,
+                    $total >= 1000000  => 2,
+                    $total > 0         => 1,
+                    default            => 0
+                };
+            }
+
+            $masterData = AlumniMaster::where(function($query) use ($search) {
+                    $query->where('nama_lengkap', 'like', "%{$search}%")
+                        ->orWhere('tahun_kelulusan', 'like', "%{$search}%");
                 })
                 ->get();
 
-            foreach ($alumnis as $alumni) {
-                $alumni->visible_data = $alumni->data_publik;
+            $alumniKeys = $alumniData->map(fn($a) => $a->nama_lengkap . '|' . (string)$a->tahun_kelulusan)->toArray();
+            $masterData = $masterData->filter(fn($a) => !in_array($a->nama_lengkap . '|' . (string)$a->tahun_kelulusan, $alumniKeys));
+
+            foreach ($masterData as $alumni) {
+                $alumni->bintang = null;
             }
+
+            $alumnis = $alumniData->concat($masterData);
         }
 
         return view('public.alumni.index', [

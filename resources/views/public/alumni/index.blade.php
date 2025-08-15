@@ -64,18 +64,15 @@
                                 jaringan alumni yang aktif dan solid!</p>
                         </div>
 
-                        <div class="">
-                            <form method="GET" action="{{ route('alumni.publik') }}">
-                                <input type="text" name="search"
-                                    class="form-control text-center form-control-lg rounded-1"
-                                    placeholder="Cari berdasarkan nama atau angkatan . ." value="{{ request('search') }}">
-                                <div class="mt-3 d-flex justify-content-center">
-                                    <button class="btn btn-primary rounded-1" type="submit">Cari Alumni</button>
-                                    <a href="/alumni/cek/form" class="btn btn-outline-primary rounded-1 ms-2">Isi Data
-                                        Alumni</a>
-                                </div>
-                            </form>
-                        </div>
+                        <form method="GET" action="{{ route('alumni.publik') }}">
+                            <input type="text" name="search" class="form-control text-center form-control-lg rounded-1"
+                                placeholder="Cari berdasarkan nama atau angkatan . ." value="{{ request('search') }}">
+                            <div class="mt-3 d-flex justify-content-center">
+                                <button class="btn btn-primary rounded-1" type="submit">Cari Alumni</button>
+                                <a href="/alumni/cek/form" class="btn btn-outline-primary rounded-1 ms-2">Isi Data
+                                    Alumni</a>
+                            </div>
+                        </form>
                     </div>
                     <!-- Tabel Hasil -->
                     @if ($alumnis->isNotEmpty())
@@ -92,18 +89,20 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($alumnis as $alumni)
-                                        @php
-                                            $detail = \App\Models\Alumni::where('nama_lengkap', $alumni->nama_lengkap)
-                                                ->where('tahun_kelulusan', $alumni->tahun_kelulusan)
-                                                ->first();
-                                            $id = $detail ? $detail->id : $alumni->id;
-                                        @endphp
                                         <tr>
-                                            <td class="py-3">{{ $alumni->nama_lengkap }}</td>
+                                            <td class="py-3">
+                                                {{ $alumni->nama_lengkap }}
+                                                @if ($alumni->bintang)
+                                                    @for ($i = 1; $i <= $alumni->bintang; $i++)
+                                                        <i class="ti ti-star text-warning"></i>
+                                                    @endfor
+                                                @endif
+                                            </td>
                                             <td class="py-3">{{ $alumni->tahun_kelulusan }}</td>
                                             <td class="py-3">{{ $alumni->pekerjaan_saat_ini ?? '-' }}</td>
                                             <td class="py-3">
-                                                <a href="{{ route('alumni.show', $id) }}" class="text-decoration-none">
+                                                <a href="{{ route('alumni.show', $alumni->id) }}"
+                                                    class="text-decoration-none">
                                                     Lihat Detail
                                                 </a>
                                             </td>

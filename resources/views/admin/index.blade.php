@@ -1,6 +1,11 @@
 @extends('layouts.admin')
-@section('title', 'Default')
+@section('title', 'Dashboard')
 
 @section('content')
-    <p class="mb-0">Halo, selamat datang di halaman</p>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="fw-semibold mb-3">@yield('title')</h2>
+
+        </div>
+    </div>
 @endsection

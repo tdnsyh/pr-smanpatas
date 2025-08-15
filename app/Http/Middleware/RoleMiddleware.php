@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, ...$roles)
     {
-        if (!Auth::check() || Auth::user()->role !== $role) {
-            return redirect('/login')->with('error', 'Access Denied!');
+        if (!Auth::check() || !in_array(Auth::user()->role, $roles)) {
+            return redirect('/')->with('error', 'Access Denied!');
         }
 
         return $next($request);

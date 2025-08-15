@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Pengeluaran;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Donasi;
+use App\Models\Pemasukan;
 
 class PengeluaranController extends Controller
 {
@@ -89,5 +91,29 @@ class PengeluaranController extends Controller
         $pengeluaran->delete();
 
         return redirect()->route('admin.pengeluaran.index')->with('success', 'Data pengeluaran berhasil dihapus.');
+    }
+
+    public function saldoIndex()
+    {
+
+        $pemasukan = Pemasukan::latest()->take(5)->get();
+        $pengeluaran = Pengeluaran::latest()->take(5)->get();
+        $donasi = Donasi::where('status', 'Verified')->latest()->take(5)->get();
+
+        $totalPemasukan = $pemasukan->sum('jumlah');
+        $totalPengeluaran = $pengeluaran->sum('jumlah');
+        $totalDonasi = $donasi->sum('jumlah');
+
+        $totalSaldo = $totalPemasukan + $totalDonasi - $totalPengeluaran;
+
+        return view('admin.saldo.index', compact(
+            'pemasukan',
+            'pengeluaran',
+            'donasi',
+            'totalPemasukan',
+            'totalPengeluaran',
+            'totalDonasi',
+            'totalSaldo'
+        ));
     }
 }

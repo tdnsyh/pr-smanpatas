@@ -31,6 +31,7 @@
                         <option value="sekretaris">Sekretaris</option>
                         <option value="media">Media</option>
                         <option value="operator">Operator</option>
+                        <option value="kehormatan">Kehormatan</option>
                     </select>
                 </div>
 

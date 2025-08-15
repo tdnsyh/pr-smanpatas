@@ -38,6 +38,18 @@ class Alumni extends Model
         return $this->hasOne(User::class);
     }
 
+    public function donasi()
+    {
+        return $this->hasManyThrough(
+            Donasi::class,
+            User::class,
+            'alumni_id',
+            'user_id',
+            'id',
+            'id'
+        );
+    }
+
     public function privasi()
     {
         return $this->hasMany(AlumniPrivasi::class);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BiodataController;
+use App\Http\Controllers\Dashboard\RiwayatController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dahsboard\CampaignController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Dashboard\GaleriController;
 use App\Http\Controllers\Dashboard\PemasukanController;
 use App\Http\Controllers\Dashboard\PengeluaranController;
 use App\Http\Controllers\Dashboard\PenggunaController;
+use App\Http\Controllers\Dashboard\ProfilController;
 use App\Http\Controllers\Public\PublicController;
 use App\Http\Middleware\RoleMiddleware;
 
@@ -77,15 +79,19 @@ Route::middleware(['auth', RoleMiddleware::class . ':sekretaris'])->name('sekret
 });
 
 Route::middleware(['auth', RoleMiddleware::class . ':media'])->name('media.dashboard.')->group(function () {
-    Route::get('/media/media', [DashboardController::class, 'dashboardMedia'])->name('index');
+    Route::get('/admin/media', [DashboardController::class, 'dashboardMedia'])->name('index');
 });
 
 Route::middleware(['auth', RoleMiddleware::class . ':alumni'])->name('alumni.dashboard.')->group(function () {
     Route::get('/alumni/dashboard', [DashboardController::class, 'dashboardAlumni'])->name('index');
 });
 
+Route::middleware(['auth', RoleMiddleware::class . ':kehormatan'])->name('kehormatan.dashboard.')->group(function () {
+    Route::get('/kehormatan/dashboard', [DashboardController::class, 'dashboardKehormatan'])->name('index');
+});
+
 // pemasukan route
-Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':operator,bendahara'])->prefix('admin')->name('admin.')->group(function () {
     Route::controller(PemasukanController::class)->prefix('pemasukan')->name('pemasukan.')->group(function () {
         Route::get('/', 'pemasukanIndex')->name('index');
         Route::get('/tambah', 'pemasukanCreate')->name('create');
@@ -97,7 +103,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin'
 });
 
 // pengeluaran route
-Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':operator,bendahara'])->prefix('admin')->name('admin.')->group(function () {
     Route::controller(PengeluaranController::class)->prefix('pengeluaran')->name('pengeluaran.')->group(function () {
         Route::get('/', 'pengeluaranIndex')->name('index');
         Route::get('/tambah', 'pengeluaranCreate')->name('create');
@@ -109,7 +115,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin'
 });
 
 // master alumni route
-Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':operator,sekretaris'])->prefix('admin')->name('admin.')->group(function () {
     Route::controller(AlumniMasterController::class)->prefix('master/alumni')->name('alumnimaster.')->group(function () {
         Route::get('/', 'alumnimasterIndex')->name('index');
         Route::get('/tambah', 'alumnimasterCreate')->name('create');
@@ -124,7 +130,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin'
 });
 
 // alumni route
-Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':operator,sekretaris'])->prefix('admin')->name('admin.')->group(function () {
     Route::controller(AlumniController::class)->prefix('alumni')->name('alumni.')->group(function () {
         Route::get('/', 'alumniIndex')->name('index');
         Route::get('/export', 'alumniIndex')->name('export');
@@ -152,8 +158,15 @@ Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin'
     });
 });
 
+// pengguna sistem
+Route::middleware(['auth', RoleMiddleware::class . ':operator,bendahara'])->prefix('admin')->name('admin.')->group(function () {
+    Route::controller(PengeluaranController::class)->prefix('saldo')->name('saldo.')->group(function () {
+        Route::get('/', 'saldoIndex')->name('index');
+    });
+});
+
 // agenda
-Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':operator,sekretaris,media'])->prefix('admin')->name('admin.')->group(function () {
     Route::controller(AgendaController::class)->prefix('agenda')->name('agenda.')->group(function () {
         Route::get('/', 'agendaIndex')->name('index');
         Route::get('/tambah', 'agendaCreate')->name('create');
@@ -166,7 +179,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin'
 });
 
 // berita
-Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':operator,sekretaris,media'])->prefix('admin')->name('admin.')->group(function () {
     Route::controller(BeritaController::class)->prefix('berita')->name('berita.')->group(function () {
         Route::get('/', 'beritaIndex')->name('index');
         Route::get('/tambah', 'beritaCreate')->name('create');
@@ -178,7 +191,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin'
 });
 
 // donasi
-Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':operator,bendahara,sekretaris'])->prefix('admin')->name('admin.')->group(function () {
     Route::controller(CampaignController::class)->prefix('campaign')->name('campaign.')->group(function () {
         Route::get('/', 'campaignIndex')->name('index');
         Route::get('/tambah', 'campaignCreate')->name('create');
@@ -193,7 +206,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin'
 });
 
 // galeri
-Route::middleware(['auth', RoleMiddleware::class . ':operator'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':operator,media'])->prefix('admin')->name('admin.')->group(function () {
     Route::controller(GaleriController::class)->prefix('galeri')->name('galeri.')->group(function () {
         Route::get('/', 'galeriIndex')->name('index');
         Route::get('/tambah', 'galeriCreate')->name('create');
@@ -210,5 +223,18 @@ Route::middleware(['auth', RoleMiddleware::class . ':alumni'])->prefix('admin')-
     Route::controller(BiodataController::class)->prefix('biodata')->name('biodata.')->group(function () {
         Route::get('/', 'biodataEdit')->name('edit');
         Route::put('/{id}/update', 'biodataUpdate')->name('update');
+    });
+});
+
+Route::middleware(['auth', RoleMiddleware::class . ':operator,media,sekretaris,bendahara,alumni,kehormatan'])->prefix('admin/profil')->name('profil.')->group(function () {
+    Route::controller(ProfilController::class)->group(function () {
+        Route::get('/', 'profilIndex')->name('index');
+        Route::post('/update', 'profilUpdate')->name('update');
+    });
+});
+
+Route::middleware(['auth', RoleMiddleware::class . ':operator,media,sekretaris,bendahara,alumni,kehormatan'])->prefix('admin/riwayat')->name('riwayat.')->group(function () {
+    Route::controller(RiwayatController::class)->group(function () {
+        Route::get('/', 'riwayatIndex')->name('index');
     });
 });
